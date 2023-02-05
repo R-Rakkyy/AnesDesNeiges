@@ -1,0 +1,5 @@
+name: AneDesNeiges
+version: '${project.version}'
+main: me.rakkyy.anedesneiges.AneDesNeiges
+api-version: 1.18
+authors: [ rak ]

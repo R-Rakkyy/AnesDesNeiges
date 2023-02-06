@@ -8,7 +8,6 @@ public final class AneDesNeiges extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-
         this.getServer().getLogger().info("[AneDesNeiges] Plugin AneDesNeiges correctement activé");
 
         // Commande: /spawn <vie> <coffre> <nom de l'ane>

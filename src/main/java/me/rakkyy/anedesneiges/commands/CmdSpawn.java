@@ -40,7 +40,7 @@ public class CmdSpawn implements CommandExecutor {
         // Minimum 3 arguments: Vie, Coffre, Nom
         if(args.length < 3) return log("Commande: /spawn <vie> <coffre: Oui/Non> <Nom de l'ane>", sender);
 
-        // Si arg0 Nombre, si Arg1 Oui/Non, si arg2 chaacter < 64(?)
+        // Si arg0 Nombre, si Arg1 Oui/Non, si arg2 character < 64(?)
         if (!((isInt(args[0]))
                 &&
                 (args[1].equalsIgnoreCase("Oui") || args[1].equalsIgnoreCase("Non") || args[1].equalsIgnoreCase("True") || args[1].equalsIgnoreCase("False"))
@@ -63,10 +63,11 @@ public class CmdSpawn implements CommandExecutor {
             else if(i == 2) name.append(arg);
             i++;
         }
-
         Player player = (Player) sender;
+
         // ***********************************************************************
         // Spawn
+
 
         Location loc = player.getLocation();
         try {

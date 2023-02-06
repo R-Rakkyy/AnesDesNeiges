@@ -3,3 +3,8 @@ version: '${project.version}'
 main: me.rakkyy.anedesneiges.AneDesNeiges
 api-version: 1.18
 authors: [ rak ]
+commands:
+  spawn:
+    permission: AneDesNeiges.spawn
+    Usage: "/spawn <vie> <Coffre: Oui/Non> <Nom de l'ane>"
+    permission-message: "§cVous n'avez pas la permission de faire cela!"

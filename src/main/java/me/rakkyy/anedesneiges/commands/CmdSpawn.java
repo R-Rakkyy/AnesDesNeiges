@@ -1,21 +1,23 @@
 package me.rakkyy.anedesneiges.commands;
 
+import me.rakkyy.anedesneiges.entities.CustomDonkey;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
 import org.bukkit.entity.*;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 
 
 public class CmdSpawn implements CommandExecutor {
 
-    private boolean log(@NotNull String msg, CommandSender sender) {
+    private boolean log(String msg, CommandSender sender) {
         sender.sendMessage("§c[AneDesNeiges] " + msg);
         return false;
     }
-    private boolean isInt(@NotNull String s) {
+    private boolean isInt(String s) {
         try { Integer.parseInt(s);
         } catch (Exception e) {return false;}
         return true;
@@ -29,7 +31,7 @@ public class CmdSpawn implements CommandExecutor {
     // coffre: String
     // nom de l'ane: String
     //
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         // ***********************************************************************
         // Conditions + Arguments
@@ -71,12 +73,19 @@ public class CmdSpawn implements CommandExecutor {
 
         Location loc = player.getLocation();
         try {
-            Entity donkey = loc.getWorld().spawnEntity(loc, EntityType.DONKEY);
+            CustomDonkey ane = new CustomDonkey(loc, name, coffre, health);
+            EntityType et = ane.getBukkitEntity().getType();
+
+            ((CraftWorld)loc.getWorld()).getHandle().addFreshEntity(ane, CreatureSpawnEvent.SpawnReason.CUSTOM);
+
+            /*
             donkey.setCustomNameVisible(true);
             donkey.setCustomName(name.toString());
             ((LivingEntity) donkey).setMaxHealth(health);
             ((LivingEntity) donkey).setHealth(health);
             ((Donkey) donkey).setCarryingChest(coffre);
+            */
+
             return true;
         } catch (Exception e) {
             e.printStackTrace();

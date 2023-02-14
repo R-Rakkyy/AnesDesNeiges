@@ -17,8 +17,8 @@ public final class AneDesNeiges extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
 
+        // Plugin shutdown logic
         getServer().getLogger().info("[AneDesNeiges] Plugin AneDesNeiges correctement désactivé");
 
     }

@@ -1,5 +1,6 @@
 package me.rakkyy.anedesneiges.commands;
 
+import com.destroystokyo.paper.entity.ai.Goal;
 import me.rakkyy.anedesneiges.entities.CustomDonkey;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -9,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.jetbrains.annotations.NotNull;
 
 
 public class CmdSpawn implements CommandExecutor {
@@ -31,21 +33,19 @@ public class CmdSpawn implements CommandExecutor {
     // coffre: String
     // nom de l'ane: String
     //
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 
         // ***********************************************************************
         // Conditions + Arguments
 
         // Doit être un joueur pour spawn l'ane
-        if (!(sender instanceof Player)) return log("Vous devez être un joueur pour executer cette commande !", sender);
+        if (!(sender instanceof Player player)) return log("Vous devez être un joueur pour executer cette commande !", sender);
 
         // Minimum 3 arguments: Vie, Coffre, Nom
-        if(args.length < 3) return log("Commande: /spawn <vie> <coffre: Oui/Non> <Nom de l'ane>", sender);
-
         // Si arg0 Nombre, si Arg1 Oui/Non, si arg2 character < 64(?)
-        if (!((isInt(args[0]))
+        if (args.length < 3 || (!((isInt(args[0]))
                 &&
-                (args[1].equalsIgnoreCase("Oui") || args[1].equalsIgnoreCase("Non") || args[1].equalsIgnoreCase("True") || args[1].equalsIgnoreCase("False"))
+                (args[1].equalsIgnoreCase("Oui") || args[1].equalsIgnoreCase("Non") || args[1].equalsIgnoreCase("True") || args[1].equalsIgnoreCase("False")))
                 // &&
                 // Character > 64 ?
             )) return log("Commande: /spawn <vie> <coffre: Oui/Non> <Nom de l'ane>", sender);
@@ -65,7 +65,8 @@ public class CmdSpawn implements CommandExecutor {
             else if(i == 2) name.append(arg);
             i++;
         }
-        Player player = (Player) sender;
+        String customName = name.toString();
+        if(customName.contains("&")) customName = customName.replace("&", "§");
 
         // ***********************************************************************
         // Spawn
@@ -73,11 +74,10 @@ public class CmdSpawn implements CommandExecutor {
 
         Location loc = player.getLocation();
         try {
-            CustomDonkey ane = new CustomDonkey(loc, name, coffre, health);
+            CustomDonkey ane = new CustomDonkey(loc, customName, coffre, health);
             EntityType et = ane.getBukkitEntity().getType();
 
             ((CraftWorld)loc.getWorld()).getHandle().addFreshEntity(ane, CreatureSpawnEvent.SpawnReason.CUSTOM);
-
             /*
             donkey.setCustomNameVisible(true);
             donkey.setCustomName(name.toString());
@@ -85,7 +85,6 @@ public class CmdSpawn implements CommandExecutor {
             ((LivingEntity) donkey).setHealth(health);
             ((Donkey) donkey).setCarryingChest(coffre);
             */
-
             return true;
         } catch (Exception e) {
             e.printStackTrace();
